@@ -12,8 +12,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class Help implements CommandExecutor {
@@ -41,7 +39,7 @@ public class Help implements CommandExecutor {
         // Affichage du titre
         player.sendMessage("");
         player.sendMessage(ChatColor.GOLD + " ❓ Aide - Liste des commandes disponibles");
-        player.sendMessage(ChatColor.GRAY + "----------------------------------------");
+        player.sendMessage("");
 
         // Parcours des commandes
         for (Map.Entry<String, Map<String, Object>> entry : commandsMap.entrySet()) {
@@ -60,46 +58,26 @@ public class Help implements CommandExecutor {
                 }
             }
 
-            // Récupération des alias
-            String aliasText = "";
-            if (info.containsKey("aliases")) {
-                Object aliasesObj = info.get("aliases");
-                if (aliasesObj instanceof List<?> rawAliases) {
-                    List<String> aliases = new ArrayList<>();
-                    for (Object alias : rawAliases) {
-                        if (alias instanceof String) {
-                            aliases.add((String) alias);
-                        }
-                    }
-
-                    if (!aliases.isEmpty()) {
-                        aliasText = ChatColor.DARK_GRAY + " (Alias: " + ChatColor.AQUA + String.join(", ", aliases) + ChatColor.DARK_GRAY + ")";
-                    }
-                }
-            }
-
-            sendCommandHelp(player, commandName, usage, description, aliasText);
+            sendCommandHelp(player, commandName, usage, description);
         }
-        player.sendMessage(ChatColor.GRAY + "----------------------------------------");
     }
 
-    private void sendCommandHelp(Player player, String command, String usage, String description, String aliasText) {
+    private void sendCommandHelp(Player player, String command, String usage, String description) {
+        // Correction de la duplication de commande
+        String fullCommand = usage.isEmpty() ? "/" + command : usage;
+
         // Construction du texte cliquable de la commande
-        String fullCommand = "/" + command + (usage.isEmpty() ? "" : " " + usage);
         TextComponent commandComponent = new TextComponent(ChatColor.YELLOW + fullCommand);
         commandComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, fullCommand));
 
         // Hover message
         commandComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                new Text(ChatColor.YELLOW + "Commande: " + ChatColor.WHITE + fullCommand + "\n" +
-                        ChatColor.YELLOW + "Description: " + ChatColor.WHITE + description + "\n" +
+                new Text(ChatColor.GOLD + "Commande: " + ChatColor.WHITE + fullCommand + "\n" +
+                        ChatColor.AQUA + "Description: " + ChatColor.GRAY + description + "\n" + "\n" +
                         ChatColor.GRAY + "Cliquez pour pré-remplir la commande")));
 
-        // Envoi du message avec la description et les alias
+        // Envoi du message
         player.spigot().sendMessage(commandComponent);
-        if (!aliasText.isEmpty()) {
-            player.sendMessage(aliasText);
-        }
         player.sendMessage(ChatColor.GRAY + " ➲ " + description);
     }
 }

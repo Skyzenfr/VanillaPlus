@@ -33,4 +33,5 @@ fr\skyzen\vanillaplus\listener\MarketListener.class
 fr\skyzen\vanillaplus\listener\entity\Entity$1.class
 fr\skyzen\vanillaplus\utils\Messages.class
 fr\skyzen\vanillaplus\commands\tabcompleter\tabCompletePay.class
+fr\skyzen\vanillaplus\commands\PrivateMessageCommand.class
 fr\skyzen\vanillaplus\listener\world\ServerListPing.class

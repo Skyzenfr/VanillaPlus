@@ -18,7 +18,7 @@ commands:
 
   spawn:
     description: "Retourner au spawn ou gérer le spawn (OP uniquement)"
-    usage: "/spawn [create/delete]"
+    usage: "/spawn <create/delete>"
     aliases: [ "hub", "lobby" ]
 
   stats:
@@ -32,12 +32,12 @@ commands:
 
   warp:
     description: "Se téléporter à un warp ou le gérer (OP uniquement)"
-    usage: "/warp [create/delete <nom>]"
+    usage: "/warp <create/delete> <nom>"
     aliases: [ "home" ]
 
   money:
     description: "Voir son argent ou modifier celui des joueurs (OP uniquement)"
-    usage: "/money [add/remove <montant> <joueur>]"
+    usage: "/money <add/remove> <montant> <joueur>"
     aliases: [ "balance", "bank", "argent" ]
 
   pay:
@@ -47,4 +47,17 @@ commands:
 
   market:
     description: "Ouvre le market ou met en vente l'item tenu en main."
-    usage: "/market [sell <prix>]"
+    usage: "/market <sell> <prix>"
+
+  msg:
+    description: "Envoie un message privé à un joueur."
+    usage: "/msg <joueur> <message>"
+    aliases: [ "mp", "message", "messages" ]
+
+  reply:
+    description: "Répond au dernier message privé."
+    usage: "/reply <message>"
+
+  msghistory:
+    description: "Affiche l'historique des 10 derniers messages privés."
+    usage: "/msghistory"

@@ -153,11 +153,14 @@ public class MarketManager {
             if (meta == null) continue;
 
             List<String> lore = new ArrayList<>();
+            lore.add("");
             lore.add(ChatColor.YELLOW + "Vendeur : " + Bukkit.getOfflinePlayer(listing.getSeller()).getName());
             lore.add(ChatColor.AQUA + "Prix : " + listing.getPrice() + "€");
+            lore.add("");
             lore.add(ChatColor.GRAY + "Mise en vente : " + listing.getDate().format(displayFormatter));
             lore.add("");
-
+            lore.add(ChatColor.DARK_GRAY + "ID: " + listing.getId());
+            lore.add("");
             // Instructions pour l'action
             lore.add(ChatColor.GOLD + "Cliquez pour acheter");
             if (player.getUniqueId().equals(listing.getSeller())) {
@@ -173,5 +176,9 @@ public class MarketManager {
             item.setItemMeta(meta);
             inv.setItem(slot, item);
         }
+
+        // ✅ Ouvrir le GUI pour le joueur
+        player.openInventory(inv);
     }
+
 }

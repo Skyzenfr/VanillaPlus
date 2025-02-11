@@ -13,11 +13,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Level;
 
 public final class VanillaPlus extends JavaPlugin implements Listener {
@@ -25,6 +28,8 @@ public final class VanillaPlus extends JavaPlugin implements Listener {
     public static Config config;
     public static Config configwarps;
     private boolean startupSuccess = false;
+    private File messagesFile;
+    private FileConfiguration messagesConfig;
 
     @Override
     public void onEnable() {
@@ -64,6 +69,12 @@ public final class VanillaPlus extends JavaPlugin implements Listener {
             setTabCompleter("warp", new tabCompleteWarp());
             setTabCompleter("money", new tabCompleteMoney());
             setTabCompleter("pay", new tabCompletePay());
+
+            getCommand("msg").setExecutor(new PrivateMessageCommand(this));
+            getCommand("reply").setExecutor(new PrivateMessageCommand(this));
+            getCommand("msghistory").setExecutor(new PrivateMessageCommand(this));
+
+            loadMessagesFile();
 
             startupSuccess = true;
         } catch (Exception e) {
@@ -112,5 +123,25 @@ public final class VanillaPlus extends JavaPlugin implements Listener {
 
     public boolean hasStartedSuccessfully() {
         return startupSuccess;
+    }
+
+    private void loadMessagesFile() {
+        messagesFile = new File(getDataFolder(), "messages.yml");
+        if (!messagesFile.exists()) {
+            saveResource("messages.yml", false);
+        }
+        messagesConfig = YamlConfiguration.loadConfiguration(messagesFile);
+    }
+
+    public FileConfiguration getMessagesConfig() {
+        return messagesConfig;
+    }
+
+    public void saveMessagesConfig() {
+        try {
+            messagesConfig.save(messagesFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
