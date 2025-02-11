@@ -1,0 +1,52 @@
+###########################################
+#               VanillaPlus               #
+###########################################
+discord: https://discord.gg/Uqe26hFk
+
+# Message de description du serveur dans la liste des serveurs
+motd:
+  line1: §e§lVANILLAPLUS §r§d(1.21) §8- §ePrivé
+
+# Configurations générales
+command_restricted: "§cVous n'êtes pas autorisé à utiliser cette commande."
+
+tab_header: "\n§e§lVANILLAPLUS\n"
+tab_footer: "\n§9§lDiscord§r§9: §fhttps://discord.gg/Uqe26hFk\n\nBesoin d'aide ? \n§e/aide §fou §e/help"
+
+#Réduit la perte de nourriture par 50%
+hunger_decrease_rate: 0.5
+
+# Configurations téléportations
+teleport:
+  # Délai avant téléportation (en secondes)
+  delay: 5
+  # Cooldown après téléportation (en secondes)
+  cooldown: 10
+  # Si true, la téléportation est annulée dès que le joueur bouge
+  cancelOnMove: true
+
+  messages:
+    waiting: "&eTéléportation dans {delay} secondes. Ne bougez pas !"
+    cancelled: "&cTéléportation annulée car vous avez bougé."
+    teleported: "&aVous avez été téléporté."
+    cooldown: "&cVous devez attendre encore {timeLeft}{timeUnit} avant de vous téléporter."
+
+  titles:
+    countdown:
+      title: "&eTéléportation dans"
+      subtitle: "&a{countdown}"
+      fadeIn: 0
+      stay: 20
+      fadeOut: 0
+    cancelled:
+      title: "&cTéléportation"
+      subtitle: "&cAnnulée"
+      fadeIn: 0
+      stay: 40
+      fadeOut: 10
+    teleported:
+      title: "&aTéléportation"
+      subtitle: "&aRéussie"
+      fadeIn: 0
+      stay: 40
+      fadeOut: 10

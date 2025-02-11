@@ -1,0 +1,105 @@
+package fr.skyzen.vanillaplus.commands;
+
+import fr.skyzen.vanillaplus.VanillaPlus;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.HoverEvent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.api.chat.hover.content.Text;
+import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class Help implements CommandExecutor {
+
+    private final VanillaPlus plugin;
+
+    public Help(VanillaPlus plugin) {
+        this.plugin = plugin;
+    }
+
+    @Override
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ChatColor.RED + "Cette commande ne peut être utilisée que par un joueur !");
+            return true;
+        }
+        sendHelpMessage(player);
+        return true;
+    }
+
+    private void sendHelpMessage(Player player) {
+        // Récupération des commandes définies dans le plugin.yml
+        Map<String, Map<String, Object>> commandsMap = plugin.getDescription().getCommands();
+
+        // Affichage du titre
+        player.sendMessage("");
+        player.sendMessage(ChatColor.GOLD + " ❓ Aide - Liste des commandes disponibles");
+        player.sendMessage(ChatColor.GRAY + "----------------------------------------");
+
+        // Parcours des commandes
+        for (Map.Entry<String, Map<String, Object>> entry : commandsMap.entrySet()) {
+            String commandName = entry.getKey();
+            Map<String, Object> info = entry.getValue();
+
+            // Récupération des infos
+            String usage = info.getOrDefault("usage", "").toString();
+            String description = info.getOrDefault("description", "Aucune description.").toString();
+
+            // Vérification des permissions
+            if (info.containsKey("permission")) {
+                String permission = info.get("permission").toString();
+                if (!player.hasPermission(permission)) {
+                    continue; // Le joueur ne peut pas voir cette commande
+                }
+            }
+
+            // Récupération des alias
+            String aliasText = "";
+            if (info.containsKey("aliases")) {
+                Object aliasesObj = info.get("aliases");
+                if (aliasesObj instanceof List<?> rawAliases) {
+                    List<String> aliases = new ArrayList<>();
+                    for (Object alias : rawAliases) {
+                        if (alias instanceof String) {
+                            aliases.add((String) alias);
+                        }
+                    }
+
+                    if (!aliases.isEmpty()) {
+                        aliasText = ChatColor.DARK_GRAY + " (Alias: " + ChatColor.AQUA + String.join(", ", aliases) + ChatColor.DARK_GRAY + ")";
+                    }
+                }
+            }
+
+            sendCommandHelp(player, commandName, usage, description, aliasText);
+        }
+        player.sendMessage(ChatColor.GRAY + "----------------------------------------");
+    }
+
+    private void sendCommandHelp(Player player, String command, String usage, String description, String aliasText) {
+        // Construction du texte cliquable de la commande
+        String fullCommand = "/" + command + (usage.isEmpty() ? "" : " " + usage);
+        TextComponent commandComponent = new TextComponent(ChatColor.YELLOW + fullCommand);
+        commandComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, fullCommand));
+
+        // Hover message
+        commandComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                new Text(ChatColor.YELLOW + "Commande: " + ChatColor.WHITE + fullCommand + "\n" +
+                        ChatColor.YELLOW + "Description: " + ChatColor.WHITE + description + "\n" +
+                        ChatColor.GRAY + "Cliquez pour pré-remplir la commande")));
+
+        // Envoi du message avec la description et les alias
+        player.spigot().sendMessage(commandComponent);
+        if (!aliasText.isEmpty()) {
+            player.sendMessage(aliasText);
+        }
+        player.sendMessage(ChatColor.GRAY + " ➲ " + description);
+    }
+}

@@ -1,0 +1,14 @@
+###########################################
+#              SurvivalPlus               #
+###########################################
+discord: https://discord.gg/Uqe26hFk
+
+# Message de description du serveur dans la liste des serveurs
+motd:
+  line1: §e§lSURVIVALPLUS §r§d(1.21) §8- §ePrivé
+
+# Configurations générales
+chat_cmd: "§cVous n'êtes pas autorisé à utiliser cette commande."
+
+tab_header: "\n§e§lSURVIVALPLUS\n"
+tab_footer: "\n§9§lDiscord§r§9: §fhttps://discord.gg/Uqe26hFk\n\nBesoin d'aide ? \n§e/aide §fou §e/help"

@@ -1,0 +1,62 @@
+// Codes couleur pour le texte :
+--------------------------------
+§4 : Rouge foncé
+§c : Rouge
+§6 : Or
+§e : Jaune
+§2 : Vert foncé
+§a : Vert
+§b : Cyan (Aqua)
+§3 : Bleu ciel (Turquoise foncé)
+§1 : Bleu foncé
+§9 : Bleu
+§d : Magenta (Violet clair)
+§5 : Violet
+§f : Blanc
+§7 : Gris
+§8 : Gris foncé
+§0 : Noir
+
+// Codes de formatage :
+-----------------------
+§r : Réinitialise la couleur par défaut
+§l : Texte en gras
+§o : Texte en italique
+§n : Texte souligné
+§m : Texte barré
+§k : Texte caché (défilant aléatoirement)
+
+Unicode :
+---------
+https://symbl.cc/en/unicode-table
+
+Bugs :
+------
+- Revoir le /help
+- debug le market
+
+Idées faire :
+-------------
+
+📦 Marché entre joueurs :
+/market sell <prix> : Met un objet en vente
+/market buy <id> : Permet d’acheter des objets mis en vente par d'autres joueurs
+✅ Interface GUI pour voir les offres disponibles
+
+
+🎁 Loot Chests Cachés :
+Un coffre rare apparaît aléatoirement sur la map avec des récompenses (coords envoyées en chat)
+Le premier joueur à le trouver gagne un loot unique
+
+💎 Boutique PNJ avec stock limité :
+Un PNJ marchand qui vend des items rares, mais avec un stock renouvelé toutes les 24h
+
+🌟 Ajout de Pierres de Résurrection :
+Un joueur peut crafter une pierre spéciale qui le fait revivre une seule fois après la mort.
+Cette pierre doit être placée dans son inventaire pour fonctionner.
+
+📦 Inventaire Fantôme :
+Après la mort, un joueur a 30 secondes pour revenir et récupérer son stuff (sinon, il tombe au sol).
+
+🎣 Pêche améliorée :
+Pêche de coffres mystérieux qui contiennent des objets rares.

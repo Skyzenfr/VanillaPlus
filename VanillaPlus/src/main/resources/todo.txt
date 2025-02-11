@@ -1,0 +1,43 @@
+// Codes couleur pour le texte :
+--------------------------------
+§4 : Rouge foncé
+§c : Rouge
+§6 : Or
+§e : Jaune
+§2 : Vert foncé
+§a : Vert
+§b : Cyan (Aqua)
+§3 : Bleu ciel (Turquoise foncé)
+§1 : Bleu foncé
+§9 : Bleu
+§d : Magenta (Violet clair)
+§5 : Violet
+§f : Blanc
+§7 : Gris
+§8 : Gris foncé
+§0 : Noir
+
+// Codes de formatage :
+-----------------------
+§r : Réinitialise la couleur par défaut
+§l : Texte en gras
+§o : Texte en italique
+§n : Texte souligné
+§m : Texte barré
+§k : Texte caché (défilant aléatoirement)
+
+Unicode :
+---------
+https://symbl.cc/en/unicode-table
+
+Bugs :
+------
+- Revoir le /help
+- debug le market (Le GUI ne s'ouvre plus)
+
+Idées faire :
+-------------
+
+📦 Marché entre joueurs :
+/market sell <prix> : Met un objet en vente
+✅ Interface GUI pour voir les offres disponibles

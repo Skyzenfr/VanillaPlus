@@ -1,0 +1,50 @@
+name: VanillaPlus
+author: Skyzen
+description: Améliorer votre expérience Survie avec de nouvelles fonctionnalités.
+
+version: '1.0'
+api-version: '1.21'
+
+main: fr.skyzen.vanillaplus.VanillaPlus
+
+commands:
+  craft:
+    description: "Permet de crafter depuis n'importe où"
+    aliases: [ ]
+
+  help:
+    description: "Affiche toutes les commandes du serveur"
+    aliases: [ "aide" ]
+
+  spawn:
+    description: "Retourner au spawn ou gérer le spawn (OP uniquement)"
+    usage: "/spawn [create/delete]"
+    aliases: [ "hub", "lobby" ]
+
+  stats:
+    description: "Affiche les statistiques des joueurs"
+    aliases: [ "stat", "s" ]
+
+  tp:
+    description: "Se téléporter à un joueur"
+    usage: "/tp"
+    aliases: [ "tpa", "teleport" ]
+
+  warp:
+    description: "Se téléporter à un warp ou le gérer (OP uniquement)"
+    usage: "/warp [create/delete <nom>]"
+    aliases: [ "home" ]
+
+  money:
+    description: "Voir son argent ou modifier celui des joueurs (OP uniquement)"
+    usage: "/money [add/remove <montant> <joueur>]"
+    aliases: [ "balance", "bank", "argent" ]
+
+  pay:
+    description: "Envoyer de l'argent à un joueur"
+    usage: "/pay <joueur> <montant>"
+    aliases: [ ]
+
+  market:
+    description: "Ouvre le market ou met en vente l'item tenu en main."
+    usage: "/market [sell <prix>]"
