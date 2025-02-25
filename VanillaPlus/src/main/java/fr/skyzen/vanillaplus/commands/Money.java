@@ -1,6 +1,5 @@
 package fr.skyzen.vanillaplus.commands;
 
-import fr.skyzen.vanillaplus.utils.MoneyManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,7 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class MoneyCommand implements CommandExecutor {
+public class Money implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -20,7 +19,7 @@ public class MoneyCommand implements CommandExecutor {
 
         // /money → Voir son solde
         if (args.length == 0) {
-            double balance = MoneyManager.getMoney(player);
+            double balance = fr.skyzen.vanillaplus.utils.Money.getMoney(player.getUniqueId());
             player.sendMessage(ChatColor.GOLD + "💰 Solde actuel : " + ChatColor.GREEN + balance + " pièces");
             return true;
         }
@@ -36,7 +35,7 @@ public class MoneyCommand implements CommandExecutor {
                     return true;
                 }
 
-                MoneyManager.addMoney(target, amount);
+                fr.skyzen.vanillaplus.utils.Money.addMoney(target.getUniqueId(), amount);
                 player.sendMessage(ChatColor.GREEN + "✅ Ajouté " + amount + " pièces à " + target.getName());
                 target.sendMessage(ChatColor.GOLD + "💰 Vous avez reçu " + ChatColor.GREEN + amount + " pièces !");
             } catch (NumberFormatException e) {
@@ -56,7 +55,7 @@ public class MoneyCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (MoneyManager.removeMoney(target, amount)) {
+                if (fr.skyzen.vanillaplus.utils.Money.removeMoney(target.getUniqueId(), amount)) {
                     player.sendMessage(ChatColor.GREEN + "❌ Retiré " + amount + " pièces à " + target.getName());
                     target.sendMessage(ChatColor.RED + "💰 Vous avez perdu " + amount + " pièces !");
                 } else {

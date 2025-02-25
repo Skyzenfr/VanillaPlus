@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
-public class PrivateMessageCommand implements CommandExecutor {
+public class PrivateMessage implements CommandExecutor {
 
     private final Map<UUID, UUID> lastMessaged = new HashMap<>();
     private final Map<UUID, Long> cooldowns = new HashMap<>();
@@ -20,7 +20,7 @@ public class PrivateMessageCommand implements CommandExecutor {
     private static final int MAX_HISTORY = 10;
     private static final long COOLDOWN_TIME = 5000; // 5 secondes
 
-    public PrivateMessageCommand(VanillaPlus plugin) {
+    public PrivateMessage(VanillaPlus plugin) {
         this.plugin = plugin;
     }
 

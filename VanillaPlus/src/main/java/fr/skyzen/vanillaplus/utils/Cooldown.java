@@ -1,5 +1,7 @@
 package fr.skyzen.vanillaplus.utils;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -22,6 +24,7 @@ public class Cooldown {
         }
         long expireTime = System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(seconds);
         cooldowns.get(key).put(player.getUniqueId(), expireTime);
+        Bukkit.getServer().getConsoleSender().sendMessage(Messages.info + Players.getPlayerName(player) + ChatColor.GRAY + " vient de recevoir un cooldown : " + ChatColor.RED + key);
     }
 
     /**
@@ -91,6 +94,7 @@ public class Cooldown {
     public static void removeCooldown(Player player, String key) {
         if (cooldowns.containsKey(key)) {
             cooldowns.get(key).remove(player.getUniqueId());
+            Bukkit.getServer().getConsoleSender().sendMessage(Messages.info + Players.getPlayerName(player) + ChatColor.GRAY + " vient de se voir retirer un cooldown : " + ChatColor.RED + key);
         }
     }
 

@@ -1,6 +1,5 @@
 package fr.skyzen.vanillaplus.utils;
 
-
 import java.util.Collections;
 import java.util.List;
 
@@ -57,15 +56,6 @@ public class Items {
         meta.addEnchant(enchantment, enchantementlevel, true);
         item.setItemMeta(meta);
         return item;
-    }
-
-    public static ItemStack getCompassWarp() {
-        ItemStack machinevoyage = new ItemStack(Material.COMPASS);
-        ItemMeta metacompass = machinevoyage.getItemMeta();
-        assert metacompass != null;
-        metacompass.setDisplayName("§d§nMachine à voyager");
-        machinevoyage.setItemMeta(metacompass);
-        return machinevoyage;
     }
 
     public static int getPlayerItemAmount(Player player, Material material) {

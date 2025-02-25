@@ -2,7 +2,7 @@ package fr.skyzen.vanillaplus.commands;
 
 import fr.skyzen.vanillaplus.utils.Cooldown;
 import fr.skyzen.vanillaplus.utils.Messages;
-import fr.skyzen.vanillaplus.utils.Players;
+import fr.skyzen.vanillaplus.utils.Teleport;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -43,7 +43,7 @@ public class Spawn implements CommandExecutor {
             Cooldown.sendCooldownMessage(player, "teleport", ChatColor.RED + "Vous devez attendre encore {time} {unit} avant de vous téléporter.");
             return false;
         }
-        Players.teleportPlayer(player, world.getSpawnLocation());
+        Teleport.teleportPlayer(player, world.getSpawnLocation());
         return true;
     }
 }

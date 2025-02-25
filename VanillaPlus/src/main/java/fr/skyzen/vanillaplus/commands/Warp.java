@@ -9,7 +9,7 @@ import java.util.Random;
 import fr.skyzen.vanillaplus.VanillaPlus;
 import fr.skyzen.vanillaplus.utils.Cooldown;
 import fr.skyzen.vanillaplus.utils.Messages;
-import fr.skyzen.vanillaplus.utils.Players;
+import fr.skyzen.vanillaplus.utils.Teleport;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
@@ -230,7 +230,7 @@ public class Warp implements CommandExecutor, Listener {
                     double z = VanillaPlus.configwarps.getConfig().getDouble("warp." + warpName + ".z");
                     float pitch = (float) VanillaPlus.configwarps.getConfig().getDouble("warp." + warpName + ".pitch");
                     float yaw = (float) VanillaPlus.configwarps.getConfig().getDouble("warp." + warpName + ".yaw");
-                    Players.teleportPlayer(player, new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
+                    Teleport.teleportPlayer(player, new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch));
                 }
             }
             player.closeInventory();

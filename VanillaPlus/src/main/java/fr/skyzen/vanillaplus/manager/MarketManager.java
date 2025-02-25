@@ -1,6 +1,7 @@
 package fr.skyzen.vanillaplus.manager;
 
 import fr.skyzen.vanillaplus.utils.MarketItem;
+import fr.skyzen.vanillaplus.utils.Money;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -18,21 +19,17 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class MarketManager {
-
     private static final List<MarketItem> listings = new ArrayList<>();
     private static File file;
-    public static FileConfiguration config;  // Veillez à ce qu'elle soit bien initialisée
+    public static FileConfiguration config;
     private static JavaPlugin plugin;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    /**
-     * Initialise le MarketManager et charge le fichier de sauvegarde.
-     */
     public static void init(JavaPlugin pl) {
         plugin = pl;
         File dataFolder = plugin.getDataFolder();
-        if (!dataFolder.exists()) {
-            dataFolder.mkdirs();
+        if (!dataFolder.exists() && !dataFolder.mkdirs()) {
+            plugin.getLogger().severe("Impossible de créer le dossier des données !");
         }
         file = new File(dataFolder, "market.yml");
         if (!file.exists()) {
@@ -47,11 +44,9 @@ public class MarketManager {
             config = YamlConfiguration.loadConfiguration(file);
         }
         loadListings();
+        startExpirationTask(); // ✅ Vérification automatique des items expirés
     }
 
-    /**
-     * Charge tous les listings enregistrés depuis le fichier YML.
-     */
     public static void loadListings() {
         listings.clear();
         if (config.contains("listings")) {
@@ -73,15 +68,7 @@ public class MarketManager {
         }
     }
 
-    /**
-     * Sauvegarde l'ensemble des listings dans le fichier YML.
-     */
     public static void saveListings() {
-        if (config == null) {
-            plugin.getLogger().severe("Impossible de sauvegarder : config est null !");
-            return;
-        }
-        // Réinitialise la section des listings
         config.set("listings", null);
         for (MarketItem item : listings) {
             String path = "listings." + item.getId() + ".";
@@ -97,9 +84,6 @@ public class MarketManager {
         }
     }
 
-    /**
-     * Ajoute un nouveau listing et le sauvegarde immédiatement.
-     */
     public static void addListing(MarketItem item) {
         listings.add(item);
         if (config == null) {
@@ -118,9 +102,10 @@ public class MarketManager {
         }
     }
 
-    /**
-     * Retire un listing et l'enlève du fichier de sauvegarde.
-     */
+    public static List<MarketItem> getListings() {
+        return listings;
+    }
+
     public static void removeListing(MarketItem item) {
         listings.remove(item);
         if (config == null) {
@@ -135,16 +120,9 @@ public class MarketManager {
         }
     }
 
-    public static List<MarketItem> getListings() {
-        return listings;
-    }
-
-    /**
-     * Construit l'interface du market avec toutes les informations et instructions.
-     */
     public static void createMarketInventory(Player player) {
         Inventory inv = Bukkit.createInventory(null, 54, ChatColor.DARK_GREEN + "Market");
-        DateTimeFormatter displayFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        LocalDateTime now = LocalDateTime.now();
 
         for (int slot = 0; slot < Math.min(listings.size(), inv.getSize()); slot++) {
             MarketItem listing = listings.get(slot);
@@ -152,33 +130,77 @@ public class MarketManager {
             ItemMeta meta = item.getItemMeta();
             if (meta == null) continue;
 
+            String seller = player.getUniqueId().equals(listing.getSeller()) ? "Vous" : Bukkit.getOfflinePlayer(listing.getSeller()).getName();
+
             List<String> lore = new ArrayList<>();
             lore.add("");
-            lore.add(ChatColor.YELLOW + "Vendeur : " + Bukkit.getOfflinePlayer(listing.getSeller()).getName());
+            lore.add(ChatColor.YELLOW + "Vendeur : " + seller);
             lore.add(ChatColor.AQUA + "Prix : " + listing.getPrice() + "€");
             lore.add("");
-            lore.add(ChatColor.GRAY + "Mise en vente : " + listing.getDate().format(displayFormatter));
-            lore.add("");
-            lore.add(ChatColor.DARK_GRAY + "ID: " + listing.getId());
-            lore.add("");
-            // Instructions pour l'action
-            lore.add(ChatColor.GOLD + "Cliquez pour acheter");
-            if (player.getUniqueId().equals(listing.getSeller())) {
-                lore.add(ChatColor.RED + "Shift-clic pour retirer de la vente");
+
+            // ✅ Temps restant avant expiration
+            LocalDateTime expirationDate = listing.getDate().plusDays(7);
+            long secondsLeft = java.time.Duration.between(now, expirationDate).getSeconds();
+            if (secondsLeft > 0) {
+                long days = secondsLeft / 86400;
+                long hours = (secondsLeft % 86400) / 3600;
+                long minutes = (secondsLeft % 3600) / 60;
+
+                String timeLeft = ChatColor.GRAY + "Expire dans : " + ChatColor.RED;
+                if (days > 0) timeLeft += days + "j ";
+                if (hours > 0) timeLeft += hours + "h ";
+                if (minutes > 0) timeLeft += minutes + "m";
+
+                lore.add(timeLeft);
+            } else {
+                lore.add(ChatColor.RED + "Offre expirée !");
             }
 
-            // Concaténer l'ancien lore si existant
-            if (meta.hasLore()) {
-                lore.addAll(Objects.requireNonNull(meta.getLore()));
+            lore.add("");
+            lore.add(ChatColor.DARK_GRAY + "ID: " + listing.getId()); // ✅ Ajout correct de l'ID
+            lore.add("");
+
+            if (!player.getUniqueId().equals(listing.getSeller())) {
+                if (Money.hasMoney(player.getUniqueId(), listing.getPrice())) {
+                    lore.add(ChatColor.GOLD + "Cliquez pour acheter");
+                } else {
+                    lore.add(ChatColor.RED + "Pas assez d'argent");
+                }
+            }
+
+            if (player.getUniqueId().equals(listing.getSeller())) {
+                lore.add(ChatColor.RED + "Shift-clic pour retirer de la vente");
             }
 
             meta.setLore(lore);
             item.setItemMeta(meta);
             inv.setItem(slot, item);
         }
-
-        // ✅ Ouvrir le GUI pour le joueur
         player.openInventory(inv);
     }
 
+    public static void checkExpiredListings() {
+        List<MarketItem> toRemove = new ArrayList<>();
+        LocalDateTime now = LocalDateTime.now();
+
+        for (MarketItem item : listings) {
+            if (item.getDate().plusDays(7).isBefore(now)) {
+                toRemove.add(item);
+                Player seller = Bukkit.getPlayer(item.getSeller());
+                if (seller != null) {
+                    seller.getInventory().addItem(item.getItem());
+                    seller.sendMessage(ChatColor.RED + "Votre item listé a expiré et vous a été rendu.");
+                }
+            }
+        }
+
+        for (MarketItem item : toRemove) {
+            removeListing(item);
+        }
+        saveListings();
+    }
+
+    public static void startExpirationTask() {
+        Bukkit.getScheduler().runTaskTimer(plugin, MarketManager::checkExpiredListings, 20 * 60 * 10, 20 * 60 * 10);
+    }
 }

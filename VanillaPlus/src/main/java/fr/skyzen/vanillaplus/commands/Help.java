@@ -67,7 +67,7 @@ public class Help implements CommandExecutor {
         String fullCommand = usage.isEmpty() ? "/" + command : usage;
 
         // Construction du texte cliquable de la commande
-        TextComponent commandComponent = new TextComponent(ChatColor.YELLOW + fullCommand);
+        TextComponent commandComponent = new TextComponent(ChatColor.GOLD + fullCommand + ChatColor.DARK_GRAY + " ➲ " + ChatColor.GRAY + description);
         commandComponent.setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, fullCommand));
 
         // Hover message
@@ -78,6 +78,5 @@ public class Help implements CommandExecutor {
 
         // Envoi du message
         player.spigot().sendMessage(commandComponent);
-        player.sendMessage(ChatColor.GRAY + " ➲ " + description);
     }
 }

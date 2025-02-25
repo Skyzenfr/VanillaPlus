@@ -1,7 +1,7 @@
 package fr.skyzen.vanillaplus.listener.players;
 
 import fr.skyzen.vanillaplus.utils.Cooldown;
-import fr.skyzen.vanillaplus.utils.TeamsTagsManager;
+import fr.skyzen.vanillaplus.utils.Players;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -17,11 +17,8 @@ public class PlayerDisconnection implements Listener {
 
         Cooldown.removeCooldown(player, "afk");
 
-        if (TeamsTagsManager.hasPlayerNameTag(player))
-            TeamsTagsManager.removePlayerNameTag(player);
-
         player.setInvulnerable(false);
         event.setQuitMessage(null);
-        Bukkit.broadcastMessage(ChatColor.RED + player.getName() + ChatColor.GRAY + " vient de quitter le serveur " + ChatColor.RED + "(" + (Bukkit.getOnlinePlayers().size() - 1) + "/" + Bukkit.getMaxPlayers() + ")");
+        Bukkit.broadcastMessage(Players.getPlayerName(player) + ChatColor.GRAY + " vient de quitter le serveur " + ChatColor.RED + "(" + (Bukkit.getOnlinePlayers().size() - 1) + "/" + Bukkit.getMaxPlayers() + ")");
     }
 }

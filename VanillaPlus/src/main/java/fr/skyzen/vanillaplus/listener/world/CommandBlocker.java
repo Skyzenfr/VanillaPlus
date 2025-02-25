@@ -2,6 +2,9 @@ package fr.skyzen.vanillaplus.listener.world;
 
 import java.util.Arrays;
 import java.util.List;
+
+import fr.skyzen.vanillaplus.utils.Messages;
+import fr.skyzen.vanillaplus.utils.Players;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -34,7 +37,7 @@ public class CommandBlocker implements Listener {
     public void onCommand(PlayerCommandPreprocessEvent event) {
         Player player = event.getPlayer();
         String command = event.getMessage().split(" ")[0].toLowerCase();
-        Bukkit.getServer().getConsoleSender().sendMessage(ChatColor.LIGHT_PURPLE + "Joueur " + ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " a fait la commande: " + ChatColor.AQUA + command);
+        Bukkit.getServer().getConsoleSender().sendMessage(Messages.info + Players.getPlayerName(player) + ChatColor.GRAY + " a fait la commande: " + ChatColor.AQUA + command);
         if (this.blockedCommands.contains(command)) {
             event.setCancelled(true);
             player.sendMessage(ChatColor.RED + "Commande inconnue.");

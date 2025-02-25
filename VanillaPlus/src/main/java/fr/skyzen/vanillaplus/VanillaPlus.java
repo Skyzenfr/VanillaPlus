@@ -1,13 +1,16 @@
 package fr.skyzen.vanillaplus;
 
 import fr.skyzen.vanillaplus.commands.*;
+import fr.skyzen.vanillaplus.commands.Money;
+import fr.skyzen.vanillaplus.commands.tabcompleter.tabCompleteMarket;
 import fr.skyzen.vanillaplus.commands.tabcompleter.tabCompleteMoney;
 import fr.skyzen.vanillaplus.commands.tabcompleter.tabCompletePay;
 import fr.skyzen.vanillaplus.commands.tabcompleter.tabCompleteWarp;
-import fr.skyzen.vanillaplus.manager.ListenerManager;
+import fr.skyzen.vanillaplus.manager.Listener;
 import fr.skyzen.vanillaplus.manager.MarketManager;
 import fr.skyzen.vanillaplus.utils.*;
 import fr.skyzen.vanillaplus.utils.gui.TeleportationGUI;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
@@ -16,20 +19,21 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public final class VanillaPlus extends JavaPlugin implements Listener {
+public final class VanillaPlus extends JavaPlugin implements org.bukkit.event.Listener {
     public static VanillaPlus plugin;
     public static Config config;
     public static Config configwarps;
     private boolean startupSuccess = false;
     private File messagesFile;
     private FileConfiguration messagesConfig;
+    private static BukkitAudiences adventure;
 
     @Override
     public void onEnable() {
@@ -50,12 +54,14 @@ public final class VanillaPlus extends JavaPlugin implements Listener {
                 saveDefaultConfig();
             }
 
+            adventure = BukkitAudiences.create(this);
             config = new Config(plugin, "config.yml");
             configwarps = new Config(plugin, "warps.yml");
             TeleportationGUI.initialize();
-            new ListenerManager(plugin).registerListeners();
-            PersistentDataUtil.init(plugin);
+            new Listener(plugin).registerListeners();
+            PersistentData.init(plugin);
             MarketManager.init(plugin);
+            Messages.startTablistUpdater();
 
             setCommandExecutor("craft", new Craft());
             setCommandExecutor("help", new Help(plugin));
@@ -63,16 +69,17 @@ public final class VanillaPlus extends JavaPlugin implements Listener {
             setCommandExecutor("stats", new Stats());
             setCommandExecutor("tp", new Teleportation());
             setCommandExecutor("warp", new Warp());
-            setCommandExecutor("money", new MoneyCommand());
-            setCommandExecutor("pay", new PayCommand());
-            setCommandExecutor("market", new MarketCommand());
+            setCommandExecutor("money", new Money());
+            setCommandExecutor("pay", new Pay());
+            setCommandExecutor("market", new Market());
+            setCommandExecutor("msg", new PrivateMessage(this));
+            setCommandExecutor("reply", new PrivateMessage(this));
+            setCommandExecutor("msghistory", new PrivateMessage(this));
+            setCommandExecutor("nickname", new NickName());
             setTabCompleter("warp", new tabCompleteWarp());
             setTabCompleter("money", new tabCompleteMoney());
             setTabCompleter("pay", new tabCompletePay());
-
-            getCommand("msg").setExecutor(new PrivateMessageCommand(this));
-            getCommand("reply").setExecutor(new PrivateMessageCommand(this));
-            getCommand("msghistory").setExecutor(new PrivateMessageCommand(this));
+            setTabCompleter("market", new tabCompleteMarket());
 
             loadMessagesFile();
 
@@ -99,10 +106,16 @@ public final class VanillaPlus extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        for (Player allplayers : Bukkit.getOnlinePlayers())
+        for (Player allplayers : Bukkit.getOnlinePlayers()){
             Cooldown.removeAllCooldowns(allplayers);
-        TeamsTagsManager.removeAllPlayerNameTags();
+        }
+
         MarketManager.saveListings();
+
+        if(adventure != null) {
+            adventure.close();
+            adventure = null;
+        }
     }
 
     public static VanillaPlus getInstance() {
@@ -141,7 +154,14 @@ public final class VanillaPlus extends JavaPlugin implements Listener {
         try {
             messagesConfig.save(messagesFile);
         } catch (IOException e) {
-            e.printStackTrace();
+            getLogger().log(Level.SEVERE, "Erreur lors de la sauvegarde de messages.yml", e);
         }
+    }
+
+    public static @NonNull BukkitAudiences adventure() {
+        if(adventure == null) {
+            throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
+        }
+        return adventure;
     }
 }

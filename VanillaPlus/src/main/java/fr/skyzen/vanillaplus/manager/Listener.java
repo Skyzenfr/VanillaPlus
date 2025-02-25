@@ -2,38 +2,40 @@ package fr.skyzen.vanillaplus.manager;
 
 import fr.skyzen.vanillaplus.VanillaPlus;
 import fr.skyzen.vanillaplus.commands.Warp;
-import fr.skyzen.vanillaplus.listener.MarketListener;
+import fr.skyzen.vanillaplus.listener.Market;
 import fr.skyzen.vanillaplus.listener.entity.Entity;
 import fr.skyzen.vanillaplus.listener.players.*;
 import fr.skyzen.vanillaplus.listener.world.*;
+import fr.skyzen.vanillaplus.utils.gui.NickNameGUI;
 import fr.skyzen.vanillaplus.utils.gui.StatistiquesGUI;
 import org.bukkit.Bukkit;
-import org.bukkit.event.Listener;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class ListenerManager {
+public class Listener {
 
     private final VanillaPlus plugin;
 
-    public ListenerManager(VanillaPlus plugin) {
+    public Listener(VanillaPlus plugin) {
         this.plugin = plugin;
     }
 
     public void registerListeners() {
-        List<Listener> listeners = Arrays.asList(
+        List<org.bukkit.event.Listener> listeners = Arrays.asList(
                 plugin,
                 new Warp(),
                 new Entity(),
                 new PlayerAnother(),
                 new PlayerConnection(),
                 new PlayerDisconnection(),
-                new World(),
+                new WorldListener(),
                 new ServerListPing(),
                 new CommandBlocker(),
                 new StatistiquesGUI(),
-                new MarketListener()
+                new Market(),
+                new Economy(),
+                new NickNameGUI()
         );
 
         listeners.forEach(listener -> Bukkit.getPluginManager().registerEvents(listener, plugin));

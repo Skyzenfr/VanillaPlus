@@ -5,13 +5,13 @@ discord: https://discord.gg/Uqe26hFk
 
 # Message de description du serveur dans la liste des serveurs
 motd:
-  line1: §e§lVANILLAPLUS §r§d(1.21) §8- §ePrivé
+  line1: §e§lVanillaPlus §r§d(1.21) §8- §ePrivé
 
 # Configurations générales
 command_restricted: "§cVous n'êtes pas autorisé à utiliser cette commande."
 
-tab_header: "\n§e§lVANILLAPLUS\n"
-tab_footer: "\n§9§lDiscord§r§9: §fhttps://discord.gg/Uqe26hFk\n\nBesoin d'aide ? \n§e/aide §fou §e/help"
+tab_header: "§e§lVanillaPlus"
+tab_footer: "§fBesoin d'aide ? §e/aide §fou §e/help"
 
 #Réduit la perte de nourriture par 50%
 hunger_decrease_rate: 0.5

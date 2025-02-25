@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.skyzen.vanillaplus.VanillaPlus;
-import fr.skyzen.vanillaplus.utils.Cooldown;
-import fr.skyzen.vanillaplus.utils.Items;
-import fr.skyzen.vanillaplus.utils.Messages;
-import fr.skyzen.vanillaplus.utils.Players;
+import fr.skyzen.vanillaplus.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -137,11 +134,11 @@ public class TeleportationGUI implements InventoryHolder, Listener {
 
                     return;
                 }
-                Players.teleportPlayer(player, target.getLocation());
+                Teleport.teleportPlayer(player, target.getLocation());
 
                 Bukkit.getScheduler().runTaskLater(VanillaPlus.getInstance(), () -> {
                     if (player.isOnline())
-                        Bukkit.broadcastMessage(ChatColor.YELLOW + player.getName() + ChatColor.GRAY + " vient de se téléporter sur " + ChatColor.YELLOW + target.getName());
+                        Bukkit.broadcastMessage(Players.getPlayerName(player) + ChatColor.GRAY + " vient de se téléporter sur " + Players.getPlayerName(target));
                 }, Messages.teleport_delay);
 
 

@@ -18,17 +18,17 @@ public class tabCompletePay implements TabCompleter {
         List<String> completions = new ArrayList<>();
 
         if (args.length == 1) {
-            // Suggérer les pseudos des joueurs en ligne
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                completions.add(player.getName());
-            }
-        } else if (args.length == 2) {
             // Suggérer des montants prédéfinis
             completions.add("10");
             completions.add("50");
             completions.add("100");
             completions.add("500");
             completions.add("1000");
+        } else if (args.length == 2) {
+            // Suggérer les pseudos des joueurs en ligne
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                completions.add(player.getName());
+            }
         }
 
         return StringUtil.copyPartialMatches(args[args.length - 1], completions, new ArrayList<>());

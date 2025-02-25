@@ -9,34 +9,34 @@ main: fr.skyzen.vanillaplus.VanillaPlus
 
 commands:
   craft:
-    description: "Permet de crafter depuis n'importe où"
+    description: "Crafter depuis n'importe où"
     aliases: [ ]
 
   help:
-    description: "Affiche toutes les commandes du serveur"
+    description: "Liste des commandes du serveur"
     aliases: [ "aide" ]
 
   spawn:
-    description: "Retourner au spawn ou gérer le spawn (OP uniquement)"
+    description: "Accéder au spawn"
     usage: "/spawn <create/delete>"
     aliases: [ "hub", "lobby" ]
 
   stats:
-    description: "Affiche les statistiques des joueurs"
+    description: "Statistiques des joueurs"
     aliases: [ "stat", "s" ]
 
   tp:
-    description: "Se téléporter à un joueur"
+    description: "Téléportation à un joueur"
     usage: "/tp"
     aliases: [ "tpa", "teleport" ]
 
   warp:
-    description: "Se téléporter à un warp ou le gérer (OP uniquement)"
+    description: "Téléportation à un warp"
     usage: "/warp <create/delete> <nom>"
     aliases: [ "home" ]
 
   money:
-    description: "Voir son argent ou modifier celui des joueurs (OP uniquement)"
+    description: "Voir son argent"
     usage: "/money <add/remove> <montant> <joueur>"
     aliases: [ "balance", "bank", "argent" ]
 
@@ -46,18 +46,21 @@ commands:
     aliases: [ ]
 
   market:
-    description: "Ouvre le market ou met en vente l'item tenu en main."
+    description: "Hotêl des ventes"
     usage: "/market <sell> <prix>"
 
   msg:
-    description: "Envoie un message privé à un joueur."
+    description: "Envoie un message à un joueur"
     usage: "/msg <joueur> <message>"
     aliases: [ "mp", "message", "messages" ]
 
   reply:
-    description: "Répond au dernier message privé."
+    description: "Répondre au dernier message"
     usage: "/reply <message>"
 
   msghistory:
-    description: "Affiche l'historique des 10 derniers messages privés."
+    description: "Affiche l'historique des messages"
     usage: "/msghistory"
+
+  nickname:
+    description: "Acheter des couleurs et des icônes de pseudo."

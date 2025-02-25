@@ -1,7 +1,8 @@
 package fr.skyzen.vanillaplus.utils.gui;
 
 import fr.skyzen.vanillaplus.utils.Messages;
-import fr.skyzen.vanillaplus.utils.PersistentDataUtil;
+import fr.skyzen.vanillaplus.utils.Money;
+import fr.skyzen.vanillaplus.utils.Players;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -17,7 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.Statistic;
 import org.bukkit.Sound;
-import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -71,19 +71,23 @@ public class StatistiquesGUI implements InventoryHolder, Listener {
         SkullMeta meta = (SkullMeta) item.getItemMeta();
         if (meta != null) {
             meta.setOwningPlayer(player);
-            meta.setDisplayName(ChatColor.YELLOW + player.getName());
+
+            // ✅ Vérifier si le joueur est en ligne avant d'utiliser getPlayerName()
+            String displayName = ChatColor.GRAY + player.getName(); // Par défaut, le nom est gris (hors-ligne).
+            Player onlinePlayer = player.getPlayer(); // Vérifier si le joueur est en ligne
+
+            if (onlinePlayer != null) {
+                displayName = Players.getPlayerName(onlinePlayer); // Utiliser le nom personnalisé si en ligne
+            }
+            meta.setDisplayName(displayName);
 
             List<String> lore = new ArrayList<>();
             lore.add(" ");
             lore.add(ChatColor.GRAY + " Générales:");
             lore.add(" ");
             lore.add(ChatColor.DARK_GRAY + "   Status: " + (player.isOnline() ? ChatColor.GREEN + "En ligne" : ChatColor.RED + "Hors-Ligne"));
-            if (player.isOnline() && player.getPlayer() != null) {
-                lore.add(ChatColor.DARK_GRAY + "   Niveau: " + ChatColor.WHITE + player.getPlayer().getLevel());
-            } else {
-                lore.add(ChatColor.DARK_GRAY + "   Niveau: " + ChatColor.WHITE + "Inconnu (Joueur hors ligne)");
-            }
-            lore.add(ChatColor.DARK_GRAY + "   Argent: " + ChatColor.WHITE + PersistentDataUtil.getPersistentData(player.getUniqueId(), "money", PersistentDataType.DOUBLE, 0.0));
+            lore.add(ChatColor.DARK_GRAY + "   Niveau: " + ChatColor.WHITE + Players.getPlayerLevel(player.getUniqueId()));
+            lore.add(ChatColor.DARK_GRAY + "   Argent: " + ChatColor.WHITE + Money.getMoney(player.getUniqueId()));
             lore.add(ChatColor.DARK_GRAY + "   Première connexion: " + ChatColor.YELLOW + new java.text.SimpleDateFormat("dd/MM/yyyy").format(new java.util.Date(player.getFirstPlayed())));
             lore.add(ChatColor.DARK_GRAY + "   Temps de jeu: " + ChatColor.GOLD + Messages.formatGameTime(player.getStatistic(Statistic.PLAY_ONE_MINUTE)));
             lore.add(" ");
@@ -111,9 +115,8 @@ public class StatistiquesGUI implements InventoryHolder, Listener {
             for (Material material : PLANT_TYPES) {
                 plantsHarvested += player.getStatistic(Statistic.MINE_BLOCK, material);
             }
+
             lore.add(ChatColor.DARK_GRAY + "   Plantes récoltées: " + ChatColor.WHITE + plantsHarvested);
-
-
             lore.add(ChatColor.DARK_GRAY + "   Poissons péchés: " + ChatColor.WHITE + player.getStatistic(Statistic.FISH_CAUGHT));
             lore.add(ChatColor.DARK_GRAY + "   Animaux nourris: " + ChatColor.WHITE + player.getStatistic(Statistic.ANIMALS_BRED));
             lore.add(ChatColor.DARK_GRAY + "   Sauts: " + ChatColor.LIGHT_PURPLE + player.getStatistic(Statistic.JUMP));
