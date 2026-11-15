@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 390" role="img" aria-labelledby="title description">
+  <title id="title">VanillaPlus — Votre aventure survie, enrichie</title>
+  <desc id="description">Une bannière vert forêt, avec collines, sapins et bloc d'herbe dans un style géométrique inspiré des jeux en blocs.</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" x2="1" y1="0" y2="1">
+      <stop stop-color="#101f27"/>
+      <stop offset="1" stop-color="#193b36"/>
+    </linearGradient>
+    <linearGradient id="ground" x1="0" x2="1" y1="0" y2="0">
+      <stop stop-color="#142b2c"/>
+      <stop offset="1" stop-color="#21533c"/>
+    </linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#c6edd0" stroke-opacity=".035"/>
+    </pattern>
+    <clipPath id="frame"><rect width="1200" height="390" rx="22"/></clipPath>
+  </defs>
+  <g clip-path="url(#frame)">
+    <path fill="url(#sky)" d="M0 0h1200v390H0z"/>
+    <path fill="url(#grid)" d="M0 0h1200v390H0z"/>
+    <circle cx="1042" cy="91" r="53" fill="#d7e5a9" opacity=".05"/>
+    <rect x="1020" y="69" width="44" height="44" rx="2" fill="#e6e9b3"/>
+    <path d="M625 234h55v-42h58v-34h58v38h48v-64h61v36h47v51h48v-28h59v-36h70v40h71v195H625z" fill="#244a41"/>
+    <path d="M580 278h84v-23h70v-33h69v46h76v-30h87v43h83v-30h77v-33h74v172H580z" fill="#1e3d38"/>
+    <path d="M0 328h600v-20h58v-14h68v21h83v-22h85v26h106v-16h110v-18h90v105H0z" fill="url(#ground)"/>
+    <g fill="#18332e">
+      <path d="M1140 183h16v139h-16z"/>
+      <path d="M1148 119l-37 58h15l-29 46h102l-29-46h15z"/>
+      <path d="M938 224h12v98h-12z"/>
+      <path d="M944 171l-28 43h11l-22 35h78l-22-35h11z"/>
+    </g>
+    <g transform="translate(797 239)">
+      <path d="M0 32l65-37 65 37-65 38z" fill="#95cc66"/>
+      <path d="M0 32l65 38v74L0 106z" fill="#79563b"/>
+      <path d="M65 70l65-38v74l-65 38z" fill="#5f452f"/>
+      <path d="M0 32l65 38v18l-15-8v9l-14-8V70l-15-9v7L0 56z" fill="#6fa84a"/>
+      <path d="M65 70l65-38v24l-17 10v10l-15 9v-8l-17 10v9l-16 9z" fill="#4f883d"/>
+      <path d="M25 94l12 7v11l-12-7zM48 115l9 5v10l-9-5z" fill="#8c6646"/>
+      <path d="M88 111l12-7v10l-12 7zM115 83l9-5v12l-9 5z" fill="#735538"/>
+      <path d="M39 23l22-13 17 10-22 13zM82 30l15-9 16 9-15 9zM23 39l16-9 15 9-16 9z" fill="#a9d57d"/>
+    </g>
+    <rect x="58" y="63" width="178" height="28" rx="14" fill="#96ce72" fill-opacity=".12" stroke="#96ce72" stroke-opacity=".35"/>
+    <circle cx="75" cy="77" r="4" fill="#a4d77e"/>
+    <text x="89" y="82" fill="#b4dda0" font-family="Segoe UI, Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2">SURVIE ENRICHIE</text>
+    <text x="55" y="181" fill="#f1f6ea" font-family="Segoe UI, Arial, sans-serif" font-size="78" font-weight="800" letter-spacing="-3">Vanilla<tspan fill="#a4d77e">Plus</tspan></text>
+    <text x="60" y="229" fill="#ccdcd2" font-family="Segoe UI, Arial, sans-serif" font-size="24">Votre aventure survie, enrichie.</text>
+    <path d="M61 260h46" stroke="#a4d77e" stroke-width="3"/>
+    <text x="60" y="302" fill="#9db6ac" font-family="Segoe UI, Arial, sans-serif" font-size="15" letter-spacing="1">EXPLORER · CONSTRUIRE · PARTAGER</text>
+    <text x="60" y="354" fill="#6e9586" font-family="Segoe UI, Arial, sans-serif" font-size="12" letter-spacing="1.5">MINECRAFT 1.21   /   PAR SKYZEN</text>
+    <g fill="#b5d79d" opacity=".6">
+      <path d="M736 81h5v5h-5zM908 69h4v4h-4zM843 112h3v3h-3zM1124 47h4v4h-4z"/>
+    </g>
+  </g>
+</svg>

@@ -39,8 +39,6 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <outputFile>C:\Users\xqls\Downloads\Serveur survie\plugins\VanillaPlus.jar
-                            </outputFile>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>
